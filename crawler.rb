@@ -16,7 +16,7 @@ class Crawler
   end
 
   def scrapper
-   @parsed = Nokogiri::HTML(HTTParty.post(@url, :query => { server: @server }))
+   @parsed = Nokogiri::HTML(HTTParty.post(@url, query: { server: @server }))
   end
 
   def get_data_needed
