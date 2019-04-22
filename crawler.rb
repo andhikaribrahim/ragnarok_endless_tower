@@ -3,7 +3,7 @@ require "nokogiri"
 require "pry"
 
 # TODO:
-# Set prompt or enable initializers params to be set during command line process
+# Set prompt to select server or enable initializers params to be set during command line process
 
 class Crawler
   def initialize(server: nil)
