@@ -1,6 +1,7 @@
 require "httparty"
 require "nokogiri"
 require "pry"
+require "awesome_print"
 
 # TODO:
 # Set prompt to select server or enable initializers params to be set during command line process
@@ -12,19 +13,32 @@ class Crawler
     @server = server || "SEA"
     # Start scrapping
     scrapper
-    binding.pry
+    get_data_needed
   end
 
   def scrapper
-   @parsed = Nokogiri::HTML(HTTParty.post(@url, query: { server: @server }))
+    return @parsed if @parsed
+    @parsed = Nokogiri::HTML(HTTParty.post(@url, query: { server: @server }))
   end
 
   def get_data_needed
     # TODO: get data needed
+    mvps = get_mvp_data
   end
 
   def get_mvp_data
     # TODO: get MVP data
+    list = @parsed.css("#et-mvp-list")
+    floors = list.css("thead tr")
+    floors = floors.map do |floor|
+      floor.css("th").map(&:text)[1..-1]
+    end.flatten
+
+    channel_and_floors = floors.map do |floor|
+      channels = list.css("tbody tr").map { |c| "#{floor}-#{c.css("td").first.text}" }.sort
+      channels
+    end
+    binding.pry
   end
 
   def get_smvp_data
